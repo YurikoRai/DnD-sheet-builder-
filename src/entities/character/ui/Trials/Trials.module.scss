@@ -1,0 +1,101 @@
+.leftPanel {
+  flex: 0 0 100px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  background: #f5e9c9;
+  border: 2px solid #8b4513;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-family: "Times New Roman", serif;
+  margin-bottom: 10px;
+}
+.skillRow {
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(200, 180, 140, 0.3);
+  }
+}
+
+.skillsHeader {
+  text-align: center;
+  padding: 8px;
+  background: #8b4513;
+  color: #faf0d9;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-bottom: 15px;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.skillsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.skillRow {
+  display: flex;
+  align-items: flex-end;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.skillCheckbox {
+  margin-right: 3px;
+
+  .checkCircle {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #8b4513;
+    border-radius: 50%;
+    background: #faf0d9;
+    position: relative;
+
+    // точка внутри кружка
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: #5c2d0a;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    // Показываем точку при добавлении класса selected
+    &.selected::after {
+      opacity: 1;
+    }
+  }
+}
+
+.skillModifier {
+  display: flex;
+  align-items: flex-end;
+  width: 20px;
+
+  font-size: 0.7rem;
+  color: #5c2d0a;
+  font-weight: bold;
+  flex-shrink: 0;
+  border-bottom: 1px solid #c0a080;
+}
+
+.skillName {
+  margin-left: 2px;
+  font-size: 0.6rem;
+  color: #5c2d0a;
+  flex-grow: 1;
+}

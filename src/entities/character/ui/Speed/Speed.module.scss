@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 55px;
+  height: 50px;
+}
+
+.SpeedWrapper {
+   border: 2px solid #8b4513;
+   border-radius: 5px ;
+  width: 100%;
+  height: 100%;
+  max-width: 200px;
+  background-color: #faf0d9;
+}
+
+
+.SpeedValue {
+ 
+  
+  display: flex;
+ 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; 
+  margin-top: 7px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #5c2d0a;
+  user-select: none;
+}
+
+.label {
+  font-size: 6px;
+  font-weight:800;
+  color: #5c2d0a;
+  margin-top: 6px;
+  line-height: 9px;
+}

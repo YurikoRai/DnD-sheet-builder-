@@ -1,0 +1,38 @@
+@use "../../shared/styles/vars" as *;
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem;
+  padding: 20px;
+}
+
+.statCard {
+  @include dnd-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  color: $color-ink;
+
+  .label {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+
+  .modifier {
+    font-size: 2rem;
+    font-family: $font-fantasy;
+    margin: 5px 0;
+  }
+
+  .input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid $color-border;
+    background: transparent;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+}

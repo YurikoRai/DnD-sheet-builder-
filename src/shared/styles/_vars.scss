@@ -1,0 +1,12 @@
+$color-parchment: #f4e1c1;
+$color-ink: #3b2f2f;
+$color-border: #8d6e63;
+$font-fantasy: "Georgia", serif;
+$border-radius: 8px;
+
+@mixin dnd-card {
+  background: $color-parchment;
+  border: 2px solid $color-border;
+  border-radius: $border-radius;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
