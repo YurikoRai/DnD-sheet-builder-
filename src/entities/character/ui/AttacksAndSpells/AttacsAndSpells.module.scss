@@ -2,20 +2,14 @@
 .container {
   display: flex;
   flex: 1;
+  max-height: 315px;
   flex-direction: column;
-}
-
-.label {
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #8b4513;
 }
 
 .textarea {
   overflow: hidden;
   flex: 1;
   padding: 8px;
-
   border: 2px solid #8b4513;
   border-radius: 4px;
   background-color: #faf0d9;
@@ -34,7 +28,7 @@
   line-height: 15px; // Должно совпадать с background-size
   background-position: 0 10px; // Выравнивание по первой линии
 
-  resize: none; // чтобы размер не менялся
+  resize: vertical;
   box-sizing: border-box;
 
   &:focus {

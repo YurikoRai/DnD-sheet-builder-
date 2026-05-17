@@ -1,25 +1,28 @@
-import React, { useState } from "react";
+"use client";
+import React from "react";
+
+import { useCharacterStore } from "../../model/store";
+
 import styles from "./Passive.module.scss";
 
 const Passive: React.FC = () => {
-  const [isSymbolVisible, setIsSymbolVisible] = useState(false);
+  const stats = useCharacterStore((state) => state.stats);
+  const proficiencies = useCharacterStore((state) => state.proficiencies);
+  const profBonus = useCharacterStore((state) => state.proficiencyBonus);
 
-  const handleClick = () => {
-    setIsSymbolVisible((prev) => !prev);
-  };
+  const wisMod = Math.floor((stats.wis - 10) / 2);
+  const isPerceptionProficient = proficiencies.includes("per"); // 'per' - id внимательности из прошлого шага
+
+  const passivePerception =
+    10 + wisMod + (isPerceptionProficient ? profBonus : 0);
 
   return (
     <div className={styles.InspirationContent}>
-      <div
-        className={styles.square}
-        onClick={handleClick}
-        role="button"
-        aria-pressed={isSymbolVisible}
-      >
-        {isSymbolVisible && <span className={styles.symbol}>✴</span>}
+      <div className={styles.square}>
+        <span className={styles.symbol}>{passivePerception}</span>
       </div>
       <div className={styles.textBox}>
-        <div className={styles.text}> Пассивная мудрость (внимание) </div>{" "}
+        <div className={styles.text}>Пассивная мудрость (внимание)</div>
       </div>
     </div>
   );

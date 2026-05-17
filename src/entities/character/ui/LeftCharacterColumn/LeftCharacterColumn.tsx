@@ -1,57 +1,63 @@
-// LeftCharacterColumn.tsx
-import React, { useState } from "react";
+"use client";
+import React from "react";
+
+import { useCharacterStore } from "../../model/store";
+
 import styles from "./LeftCharacterColumn.module.scss";
 
-const LeftCharacterColumn: React.FC = () => {
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-
-  const toggleSkill = (skillName: string) => {
-    setSelectedSkills((prev) =>
-      prev.includes(skillName)
-        ? prev.filter((name) => name !== skillName)
-        : [...prev, skillName]
-    );
-  };
+const LeftCharacterColumn = () => {
+  const stats = useCharacterStore((state) => state.stats);
+  const profBonus = useCharacterStore((state) => state.proficiencyBonus);
+  const proficiencies = useCharacterStore((state) => state.proficiencies);
+  const toggleProficiency = useCharacterStore(
+    (state) => state.toggleProficiency,
+  );
 
   const skills = [
-    "Акробатика (Лов)",
-    "Анализ (Инт)",
-    "Атлетика (Сил)",
-    "Восприятие (Муд)",
-    "Выживание (Муд)",
-    "Выступление (Хар)",
-    "Запугивание (Хар)",
-    "История (Инт)",
-    "Ловкость рук (Лов)",
-    "Магия (Инт)",
-    "Медицина (Муд)",
-    "Обман (Хар)",
-    "Природа (Инт)",
-    "Проницател.(Муд)",
-    "Религия (Инт)",
-    "Скрытность (Лов)",
-    "Убеждение (Хар)",
-    "Дрессировка (Муд)",
-  ];
+    { id: "ath", name: "Атлетика", stat: "str" },
+    { id: "acr", name: "Акробатика", stat: "dex" },
+    { id: "sle", name: "Ловкость рук", stat: "dex" },
+    { id: "ste", name: "Скрытность", stat: "dex" },
+    { id: "arc", name: "Магия", stat: "int" },
+    { id: "his", name: "История", stat: "int" },
+    { id: "inv", name: "Расследование", stat: "int" },
+    { id: "nat", name: "Природа", stat: "int" },
+    { id: "rel", name: "Религия", stat: "int" },
+    { id: "ins", name: "Проницательность", stat: "wis" },
+    { id: "med", name: "Медицина", stat: "wis" },
+    { id: "per", name: "Внимательность", stat: "wis" },
+    { id: "sur", name: "Выживание", stat: "wis" },
+    { id: "ani", name: "Дрессировка", stat: "wis" },
+    { id: "dec", name: "Обман", stat: "cha" },
+    { id: "int", name: "Запугивание", stat: "cha" },
+    { id: "per_s", name: "Выступление", stat: "cha" },
+    { id: "per_u", name: "Убеждение", stat: "cha" },
+  ] as const;
 
   return (
     <div className={styles.leftPanel}>
       <div className={styles.skillsContainer}>
-        {skills.map((skill) => (
-          <SkillEntry
-            key={skill}
-            name={skill}
-            modifier={0}
-            isSelected={selectedSkills.includes(skill)}
-            onToggle={() => toggleSkill(skill)}
-          />
-        ))}
+        {skills.map((skill) => {
+          const isSelected = proficiencies.includes(skill.id);
+          const baseMod = Math.floor((stats[skill.stat] - 10) / 2);
+          const totalBonus = isSelected ? baseMod + profBonus : baseMod;
+
+          return (
+            <SkillEntry
+              key={skill.id}
+              name={skill.name}
+              modifier={totalBonus}
+              isSelected={isSelected}
+              onToggle={() => toggleProficiency(skill.id)}
+            />
+          );
+        })}
       </div>
+      {/* <div className={styles.skillName}>НАВЫКИ</div> */}
     </div>
   );
 };
 
-// Обновленный компонент навыка
 interface SkillEntryProps {
   name: string;
   modifier: number;

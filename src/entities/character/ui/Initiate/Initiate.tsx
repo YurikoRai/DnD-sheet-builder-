@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React from "react";
+
+import { useCharacterStore } from "../../model/store";
+
 import styles from "./Initiate.module.scss";
 
-interface InitiateProps {
-  initialValue?: number;
-  onChange?: (value: number) => void;
-}
-
-const Initiate: React.FC<InitiateProps> = ({ initialValue = 0, onChange }) => {
-  const [InitiateStat, setInitiateStat] = useState<number>(initialValue);
-
-  useEffect(() => {
-    setInitiateStat(initialValue);
-  }, [initialValue]);
-
-  const handleValueChange = (newValue: number) => {
-    setInitiateStat(newValue);
-    if (onChange) {
-      onChange(newValue);
-    }
-  };
+const Initiate = () => {
+  const dex = useCharacterStore((state) => state.stats.dex);
+  const modifier = Math.floor((dex - 10) / 2);
 
   return (
     <div className={styles.container}>
       <div className={styles.InitiateWrapper}>
         <div className={styles.InitiateValue}>
-          {InitiateStat}
+          {modifier}
           <div className={styles.label}>ИНИЦИАТИВА</div>
         </div>
       </div>

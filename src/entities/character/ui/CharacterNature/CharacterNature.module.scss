@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 .container {
   display: flex;
-  flex: 1;
   flex-direction: column;
+  gap: 5px;
 }
 
 .label {
@@ -13,28 +13,23 @@
 
 .textarea {
   overflow: hidden;
-  flex: 1;
+  resize: vertical;
+  width: 100%;
+  height: 64px;
   padding: 8px;
-
   border: 2px solid #8b4513;
-  border-radius: 4px;
   background-color: #faf0d9;
-
   font-size: 14px;
   color: #8b4513;
-  // вот ниже эти полосочки для текста (линовка)
   background-image: linear-gradient(
     to bottom,
     transparent 13px,
-    // Прозрачный промежуток до линии
     #8b451373 14px,
     transparent 14px
   );
-  background-size: 100% 15px; // Полный цикл = 15px
-  line-height: 15px; // Должно совпадать с background-size
-  background-position: 0 10px; // Выравнивание по первой линии
-
-  resize: none; // чтобы размер не менялся
+  background-size: 100% 15px;
+  line-height: 15px;
+  background-position: 0 10px;
   box-sizing: border-box;
 
   &:focus {
@@ -47,11 +42,10 @@
     border-color: #8b4513;
   }
 
-  // Стили для плейсхолдера
   &::placeholder {
     color: #8b4513;
     font-style: italic;
-    line-height: 15px; // надо чтоб совпадал с линиями
+    line-height: 15px;
   }
 }
 
@@ -61,5 +55,19 @@
   font-size: 8px;
   font-weight: 800;
   color: #8b4513;
-  margin-top: -15px;
+  margin-top: -22px;
+}
+
+.firstBorder {
+  border: 2px solid #8b4513 !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  resize: vertical;
+}
+
+.lastBorder {
+  border: 2px solid #8b4513 !important;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  resize: vertical;
 }

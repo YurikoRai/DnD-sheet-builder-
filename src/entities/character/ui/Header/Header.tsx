@@ -1,22 +1,15 @@
-import React, { useState } from "react";
+"use client";
+import React from "react";
+
+import { useCharacterStore } from "../../model/store";
+
 import styles from "./Header.module.scss";
 
-// Вспомогательный компонент для селекта
-interface SelectInputProps<T extends string> {
-  value: T;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: readonly T[];
-}
-
-const SelectInput = <T extends string>({
-  value,
-  onChange,
-  options,
-}: SelectInputProps<T>) => {
+const SelectInput = ({ value, onChange, options }: any) => {
   return (
     <div className={styles.diceSelectContainer}>
       <select value={value} onChange={onChange} className={styles.diceSelect}>
-        {options.map((option) => (
+        {options.map((option: string) => (
           <option key={option} value={option}>
             {option}
           </option>
@@ -27,47 +20,11 @@ const SelectInput = <T extends string>({
 };
 
 const Header = () => {
-  const [text, setText] = useState("");
+  const store = useCharacterStore();
 
-  const [playerName, setPlayerName] = useState("");
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPlayerName(e.target.value);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
-  };
-
-  // КЛАСС
   const classOptions = ["Воин", "Плут", "Варвар"] as const;
-  type ClassType = (typeof classOptions)[number];
-  const [selectedClass, setSelectedClass] = useState<ClassType>(
-    classOptions[0]
-  );
-  const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(e.target.value as ClassType);
-  };
-
-  // РАСА
   const raceOptions = ["Человек", "Эльф", "Дворф"] as const;
-  type raceType = (typeof raceOptions)[number];
-  const [selectedRace, setSelectedRace] = useState<raceType>(raceOptions[0]);
-  const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRace(e.target.value as raceType);
-  };
-
-  // ПРЕДЫСТОРИИ
   const originOptions = ["Артист", "Моряк", "Пират"] as const;
-  type originType = (typeof originOptions)[number];
-  const [selectedOrigin, setSelectedOrigin] = useState<originType>(
-    originOptions[0]
-  );
-  const handleOriginChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOrigin(e.target.value as originType);
-  };
-
-  // МИРОВОЗЗРЕНИЕ
   const alignmentOptions = [
     "Законно-добрый",
     "Нейтрально-добрый",
@@ -79,13 +36,6 @@ const Header = () => {
     "Нейтрально-злой",
     "Хаотично-злой",
   ] as const;
-  type alignmentType = (typeof alignmentOptions)[number];
-  const [selectedAlignment, setSelecctedAlignment] = useState<alignmentType>(
-    alignmentOptions[0]
-  );
-  const handleAlignmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelecctedAlignment(e.target.value as alignmentType);
-  };
 
   return (
     <div className={styles.header}>
@@ -93,41 +43,46 @@ const Header = () => {
         <div className={styles.container}>
           <textarea
             className={styles.textarea}
-            value={text}
-            onChange={handleChange}
+            value={store.name}
+            onChange={(e) => store.updateHeader("name", e.target.value)}
             placeholder="Введите имя персонажа..."
           />
           <div className={styles.captions}>ИМЯ ПЕРСОНАЖА</div>
         </div>
+
         <div className={styles.rightContainer}>
           <div className={styles.leftCollumn}>
             <SelectInput
-              value={selectedClass}
-              onChange={handleClassChange}
+              value={store.class}
+              onChange={(e: any) => store.updateHeader("class", e.target.value)}
               options={classOptions}
             />
             <SelectInput
-              value={selectedRace}
-              onChange={handleRaceChange}
+              value={store.race}
+              onChange={(e: any) => store.updateHeader("race", e.target.value)}
               options={raceOptions}
             />
           </div>
           <div className={styles.leftCollumn}>
             <SelectInput
-              value={selectedOrigin}
-              onChange={handleOriginChange}
+              value={store.origin}
+              onChange={(e: any) =>
+                store.updateHeader("origin", e.target.value)
+              }
               options={originOptions}
             />
             <SelectInput
-              value={selectedAlignment}
-              onChange={handleAlignmentChange}
+              value={store.alignment}
+              onChange={(e: any) =>
+                store.updateHeader("alignment", e.target.value)
+              }
               options={alignmentOptions}
             />
           </div>
           <textarea
             className={styles.nameArea}
-            value={playerName}
-            onChange={handleNameChange}
+            value={store.playerName}
+            onChange={(e) => store.updateHeader("playerName", e.target.value)}
             placeholder="Введите имя игрока..."
           />
         </div>

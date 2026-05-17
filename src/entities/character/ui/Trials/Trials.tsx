@@ -1,45 +1,51 @@
-import React, { useState } from "react";
+"use client";
+import React from "react";
+
+import { useCharacterStore } from "../../model/store";
+
 import styles from "./Trials.module.scss";
 
-const trialsColumn: React.FC = () => {
-  const [selectedTrials, setSelectedTrials] = useState<string[]>([]);
-
-  const toggleTrial = (TrialName: string) => {
-    setSelectedTrials((prev) =>
-      prev.includes(TrialName)
-        ? prev.filter((name) => name !== TrialName)
-        : [...prev, TrialName]
-    );
-  };
+const TrialsColumn = () => {
+  const stats = useCharacterStore((state) => state.stats);
+  const proficiencies = useCharacterStore((state) => state.proficiencies);
+  const profBonus = useCharacterStore((state) => state.proficiencyBonus);
+  const toggleProficiency = useCharacterStore(
+    (state) => state.toggleProficiency,
+  );
 
   const trials = [
-    "Сила",
-    "Ловкость",
-    "Выносливость",
-    "Интеллект",
-    "Мудрость",
-    "Харизма",
-  ];
+    { id: "trial_str", name: "Сила", statKey: "str" },
+    { id: "trial_dex", name: "Ловкость", statKey: "dex" },
+    { id: "trial_con", name: "Выносливость", statKey: "con" },
+    { id: "trial_int", name: "Интеллект", statKey: "int" },
+    { id: "trial_wis", name: "Мудрость", statKey: "wis" },
+    { id: "trial_cha", name: "Харизма", statKey: "cha" },
+  ] as const;
 
   return (
     <div className={styles.leftPanel}>
       <div className={styles.skillsContainer}>
-        {trials.map((trial) => (
-          <SkillEntry
-            key={trial}
-            name={trial}
-            modifier={0}
-            isSelected={selectedTrials.includes(trial)}
-            onToggle={() => toggleTrial(trial)}
-          />
-        ))}
+        {trials.map((trial) => {
+          const isSelected = proficiencies.includes(trial.id);
+          const baseMod = Math.floor((stats[trial.statKey] - 10) / 2);
+          const finalModifier = isSelected ? baseMod + profBonus : baseMod;
+
+          return (
+            <SkillEntry
+              key={trial.id}
+              name={trial.name}
+              modifier={finalModifier}
+              isSelected={isSelected}
+              onToggle={() => toggleProficiency(trial.id)}
+            />
+          );
+        })}
       </div>
-      <div className={styles.skillName}>Испытания</div>
+      <div className={styles.skillName}></div>
     </div>
   );
 };
 
-// Обновленный компонент навыка
 interface trialEntryProps {
   name: string;
   modifier: number;
@@ -68,4 +74,4 @@ const SkillEntry: React.FC<trialEntryProps> = ({
   );
 };
 
-export default trialsColumn;
+export default TrialsColumn;

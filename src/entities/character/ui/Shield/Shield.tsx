@@ -1,32 +1,25 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import React from "react";
+import { useCharacterStore } from "../../model/store";
+
 import styles from "./Shield.module.scss";
-import shieldSvg from "public/pictures/Shield.svg";
 
-interface ShieldProps {
-  initialValue?: number;
-  onChange?: (value: number) => void;
-}
-
-const Shield: React.FC<ShieldProps> = ({ initialValue = 0, onChange }) => {
-  const [ShieldStat, setShieldStat] = useState<number>(initialValue);
-
-  useEffect(() => {
-    setShieldStat(initialValue);
-  }, [initialValue]);
-
-  const handleValueChange = (newValue: number) => {
-    setShieldStat(newValue);
-    if (onChange) {
-      onChange(newValue);
-    }
-  };
+const Shield = () => {
+  const dex = useCharacterStore((state) => state.stats.dex);
+  const modifier = Math.floor((dex - 10) / 2);
+  const armorClass = 10 + modifier;
 
   return (
     <div className={styles.container}>
       <div className={styles.shieldWrapper}>
-        <img src={shieldSvg} alt="Armor Shield" className={styles.shieldSvg} />
+        <img
+          src="/Shield.svg"
+          alt="Armor Shield"
+          className={styles.shieldSvg}
+        />
         <div className={styles.armorValue}>
-          {ShieldStat}
+          {armorClass}
           <div className={styles.label}>КЛАСС БРОНИ</div>
         </div>
       </div>

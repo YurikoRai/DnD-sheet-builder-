@@ -1,149 +1,132 @@
-import React, { useEffect, useState } from "react";
-import styles from "./CurrentHP.module.scss";
+"use client";
+import React from "react";
+import { useCharacterStore } from "../../model/store";
+import styles from "./CurrentHp.module.scss";
 
-interface CurrentHpProps {
-  externalValue?: number;
-  onChange?: (value: number) => void;
-}
-const CurrentHPAreaBlock: React.FC<CurrentHpProps> = ({
-  externalValue = "",
-  onChange,
-}) => {
-  const [HPValue, setHPValue] = useState<string>(externalValue.toString());
+const CurrentHPAreaBlock = () => {
+  const { current, max } = useCharacterStore((state) => state.hp);
+  const updateHp = useCharacterStore((state) => state.updateHP);
 
-  useEffect(() => {
-    setHPValue(externalValue.toString());
-  }, [externalValue]);
+  const handleChangeMax = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateHp("max", parseInt(e.target.value) || 0);
+  };
 
-  // Обработчик изменений в текстовом поле
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleChangeCurrent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateHp("current", parseInt(e.target.value) || 0);
+  };
 
-    // Разрешаем: пустая строка и целые числа
-    if (value === "" || /^\d*$/.test(value)) {
-      setHPValue(value);
+  const hitDiceType = useCharacterStore((state) => state.hitDice.type) || "d8";
+  const hitDiceRemaining =
+    useCharacterStore((state) => state.hitDice.remaining) || 3;
+  const hitDiceTotal = useCharacterStore((state) => state.hitDice.total) || 3;
+  const updateHitDice = useCharacterStore((state) => state.updateHitDice);
 
-      // Парсим и передаем значение наружу
-      const numValue = parseInt(value);
-      if (!isNaN(numValue)) {
-        onChange?.(numValue);
-      } else if (value === "") {
-        onChange?.(0); // Обработка пустой строки
-      }
+  const handleHitDiceTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateHitDice?.("type", e.target.value);
+  };
+
+  const deathSuccesses =
+    useCharacterStore((state) => state.deathSaves.successes) || 0;
+  const deathFailures =
+    useCharacterStore((state) => state.deathSaves.failures) || 0;
+  const updateDeathSaves = useCharacterStore((state) => state.updateDeathSaves);
+
+  const toggleDeathSave = (type: "success" | "failure", index: number) => {
+    if (type === "success") {
+      const newValue = deathSuccesses === index + 1 ? index : index + 1;
+      updateDeathSaves?.("successes", newValue);
+    } else {
+      const newValue = deathFailures === index + 1 ? index : index + 1;
+      updateDeathSaves?.("failures", newValue);
     }
   };
 
-  const diceOptions = ["К6", "К8", "К10", "К12"] as const;
-  type DiceType = (typeof diceOptions)[number];
-
-  // Для костей здоровья
-  const [selectedDice, setSelectedDice] = useState<DiceType>("К6");
-
-  // Обработчик Для костей здоровья
-  const handleDiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDice(e.target.value as DiceType);
-  };
-
-  // Переключение чекбокса по индексу
-  const [checkboxes, setCheckboxes] = useState<boolean[]>([
-    false,
-    false,
-    false,
-  ]);
-
-  const toggleCheckbox = (index: number) => {
-    const newCheckboxes = [...checkboxes];
-    newCheckboxes[index] = !newCheckboxes[index];
-    setCheckboxes(newCheckboxes);
-  };
-
   return (
-    <div>
+    <div className={styles.allContent}>
+      {/* Блок текущих и максимальных ПЗ */}
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.label}>Максимум ПЗ</div>
           <input
             className={styles.TopTextArea}
-            value={HPValue}
-            onChange={handleChange}
-            placeholder=""
+            type="number"
+            value={max}
+            onChange={handleChangeMax}
           />
         </div>
-        <div className={styles.BottomTextArea} />
-        <div className={styles.bottomLabel}>ТЕКУЩИЕ ПУНКТЫ ЗДОРОВЬЯ </div>
+        <input
+          className={styles.BottomTextArea}
+          type="number"
+          value={current}
+          onChange={handleChangeCurrent}
+        />
+        <div className={styles.bottomLabel}>ТЕКУЩИЕ ПУНКТЫ ЗДОРОВЬЯ</div>
       </div>
 
-      <div className={styles.BottomContainer}>
-        <div className={styles.TempContainer}></div>
-        <div className={styles.SecondBottomLabel}>
-          ВРЕМЕННЫЕ ПУНКТЫ ЗДОРОВЬЯ{" "}
-        </div>
+      {/* Блок временных ПЗ */}
+      <div className={styles.tempContainer}>
+        <input
+          className={styles.BottomTextArea}
+          type="number"
+          value={current}
+          onChange={handleChangeCurrent}
+        />
+        <div className={styles.bottomLabel}>ВРЕМЕННЫЕ ПУНКТЫ ЗДОРОВЬЯ</div>
       </div>
+
+      {/* кости хитов и спасброски от смерти */}
       <div className={styles.DicesAndTrialsContainer}>
         <div className={styles.DicesHpContainer}>
-          <div className={styles.content}>
-            <div className={styles.label2}>Всего</div>
-            <input
-              className={styles.TopTextArea}
-              value={HPValue}
-              onChange={handleChange}
-              placeholder=""
-            />
-          </div>
-          {/*выпадающий список для костей хп */}
           <div className={styles.diceSelectContainer}>
             <select
-              value={selectedDice}
-              onChange={handleDiceChange}
               className={styles.diceSelect}
+              value={hitDiceType}
+              onChange={handleHitDiceTypeChange}
             >
-              {diceOptions.map((dice) => (
-                <option key={dice} value={dice}>
-                  {dice}
-                </option>
-              ))}
+              <option value="d4">d4</option>
+              <option value="d6">d6</option>
+              <option value="d8">d8</option>
+              <option value="d10">d10</option>
+              <option value="d12">d12</option>
             </select>
           </div>
-          <div className={styles.SecondBottomLabel}>кости здоровья </div>
-        </div>
-        <div className={styles.DicesHpContainer}>
-          <div className={styles.checkboxesContainer}>
-            <label className={styles.SecondBottomLabel}>успехи</label>
-            {[0, 1, 2].map((index) => (
-              <React.Fragment key={index}>
-                <div
-                  key={index}
-                  className={`${styles.checkCircle} ${checkboxes[index] ? styles.selected : ""}`}
-                  onClick={() => toggleCheckbox(index)}
-                />
-                {index < 2 && (
-                  <div className={styles.horizontalDividerWrapper}>
-                    <div className={styles.divider} />{" "}
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
 
-          <div className={styles.checkboxesContainer}>
-            <label className={styles.SecondBottomLabel}>провалы</label>
-            {[3, 4, 5].map((index) => (
-              <React.Fragment key={index}>
-                <div
-                  key={index}
-                  className={`${styles.checkCircle} ${checkboxes[index] ? styles.selected : ""}`}
-                  onClick={() => toggleCheckbox(index)}
-                />
-                {index < 5 && (
-                  <div className={styles.horizontalDividerWrapper}>
-                    <div className={styles.divider} />{" "}
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
+          <div className={styles.label}>
+            {hitDiceRemaining} / {hitDiceTotal}
           </div>
-          <div className={styles.EmptySpace} />
-          <label className={styles.SecondBottomLabel}>исп. против смерти</label>
+          <div className={styles.bottomLabel}>КОСТИ ХИТОВ</div>
+        </div>
+
+        <div className={styles.DicesHpContainer}>
+          <div className={styles.content}>
+            <div className={styles.label}>Успехи</div>
+            <div className={styles.checkboxesContainer}>
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={`success-${i}`}
+                  className={`${styles.checkCircle} ${
+                    i < deathSuccesses ? styles.selected : ""
+                  }`}
+                  onClick={() => toggleDeathSave("success", i)}
+                />
+              ))}
+            </div>
+          </div>
+          <div className={styles.content}>
+            <div className={styles.label}>Провалы</div>
+            <div className={styles.checkboxesContainer}>
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={`failure-${i}`}
+                  className={`${styles.checkCircle} ${
+                    i < deathFailures ? styles.selected : ""
+                  }`}
+                  onClick={() => toggleDeathSave("failure", i)}
+                />
+              ))}
+            </div>
+          </div>
+          <div className={styles.bottomLabel}>СПАСБРОКИ ОТ СМЕРТИ</div>
         </div>
       </div>
     </div>
