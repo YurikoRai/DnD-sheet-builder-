@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./Properties.module.scss";
-import { useCharacterStore } from "@/src/entities/character/model/store";
+import { useCharacterStore } from "@/src/entities/Сharacter/model/store";
 
 const Properties = () => {
   const text = useCharacterStore((state) => state.features);

@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
+
+.header {
+  padding-bottom: 15px;
+}
+
+.details {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.detailItem {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+
+  label {
+    display: block;
+    font-weight: bold;
+    color: #5c2d0a;
+    margin-bottom: 5px;
+  }
+}
+
+.textarea {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  border: 15px solid transparent;
+  border-image: url("/BoardName.svg") 15;
+  background: none;
+  margin-left: 19px;
+  margin-top: 10px;
+  background-position: 0%;
+  font-size: 16px;
+  font-weight: 800;
+  color: #8b4513;
+  resize: none;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #8b4513;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #8b4513;
+  }
+
+  &::placeholder {
+    color: #8b4513;
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 15px;
+  }
+}
+
+.levelArea,
+.nameArea {
+  text-align: left;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: none;
+  background: none;
+  font-size: 16px;
+  width: 100%;
+  font-weight: 600;
+  color: #8b4513;
+  resize: none;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+    border-color: #8b4513;
+  }
+
+  &::placeholder {
+    display: flex;
+    align-items: flex-end;
+    color: #8b4513;
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 15px;
+  }
+}
+
+.levelArea {
+  text-align: left;
+}
+
+.inputWrapper {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 250px;
+}
+.captionName {
+  display: flex;
+  position: absolute;
+  justify-content: flex-start;
+  font-size: 10px;
+  font-weight: 800;
+  color: #8b4513;
+  margin-left: 100px;
+  margin-top: 57px;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  height: 80px;
+  padding-bottom: 10px;
+  flex: 1;
+  border: 10px solid transparent;
+  box-sizing: border-box;
+  border-image: url("/BoardForAll.svg") 20;
+  gap: 15px;
+}
+
+.leftCollumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.diceSelectContainer {
+  display: flex;
+  position: relative;
+  flex: 1;
+}
+
+.diceSelect {
+  border: 0;
+  background: none;
+  color: #8b4513;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+  // min-width: 120px;
+
+  &:focus {
+    outline: none;
+
+    border: 0;
+  }
+  &:hover {
+    background-color: #faf0d9;
+    border-radius: 30px;
+  }
+
+  option {
+    background-color: #faf0d9;
+    color: #8b4513;
+    border: none;
+    font-weight: bold;
+  }
+}
+
+.lines {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  border: 0;
+  flex: 1;
+  border-bottom: 2px solid #8b4513;
+  min-height: 0;
+  min-width: 0;
+}
+
+.captions {
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  font-size: 9px;
+  font-weight: 400;
+  color: #8b4513;
+  white-space: nowrap;
+}

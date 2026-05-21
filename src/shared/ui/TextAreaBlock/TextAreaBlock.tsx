@@ -1,5 +1,5 @@
 "use client";
-import { useCharacterStore } from "@/src/entities/character/model/store";
+import { useCharacterStore } from "@/src/entities/Сharacter/model/store";
 
 import styles from "./TextAreaBlock.module.scss";
 
